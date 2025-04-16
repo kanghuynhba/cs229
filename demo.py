@@ -175,27 +175,54 @@
 
 import numpy as np
 
-a=np.array([1, 2, 3])
-print(a)
+# Array/matrix initialization
 
-b=np.array([[1, 2, 3], [4, 5, 6]])
-print(b)
+# a=np.array([1, 2, 3])
+# print(a)
 
-c0=np.zeros(5)
-c1=np.ones((5, 5))
-print(c0)
-print(c1)
+# b=np.array([[1, 2, 3], [4, 5, 6]])
+# print(b)
 
-d=np.random.random((5, 5))
-print(d)
-# Access an element
-print(d[1,2])
-# Access a column
-print(d[:,2])
-# Access a range of columns
-print(d[:, 0:2])
-# Access a range of columns and rows
-print(d[1:4, 0:2])
+# c0=np.zeros(5)
+# c1=np.ones((5, 5))
+# print(c0)
+# print(c1)
 
-e=np.eye(5) # Identity matrix
-print(e)
+# d=np.random.random((5, 5))
+# print(d)
+# print(" Access an element")
+# print(d[1,2])
+# print(" Access a column")
+# print(d[:,2])
+# print(" Access a range of columns")
+# print(d[:, 0:2])
+# print(" Access a range of columns and rows")
+# print(d[1:4, 0:2])
+# print(" Access elements>2")
+# h=d*10
+# print(h[h>2])
+
+# e=np.eye(5) # Identity matrix
+# print(e)
+
+# Math over Array
+
+# x=np.array([[1, 2], [3, 4]])
+# y=np.array([[5, 6], [7, 8]])
+# # Add oprt
+# print(x+y)
+# print(np.add(x, y))
+# # Multiplication oprt
+# print(x.dot(y))
+# print(np.dot(x, y))
+
+# Broadcasting
+# We will add the vector v to "each" row of the matrix x,
+# storing the result in the matrix y
+x=np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+v=np.array([1, 0, 1])
+y=np.empty_like(x) # Create an empty matrix with the same shape as x
+# Add the vector x to each row of the matrix x with an explicit loop
+for i in range(4):
+    y[i:]=x[i:]+v
+print(y)
