@@ -219,10 +219,68 @@ import numpy as np
 # Broadcasting
 # We will add the vector v to "each" row of the matrix x,
 # storing the result in the matrix y
-x=np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
-v=np.array([1, 0, 1])
-y=np.empty_like(x) # Create an empty matrix with the same shape as x
-# Add the vector x to each row of the matrix x with an explicit loop
-for i in range(4):
-    y[i:]=x[i:]+v
-print(y)
+
+# x=np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+# v=np.array([1, 0, 1])
+
+# # y=np.empty_like(x) # Create an empty matrix with the same shape as x
+# # # Add the vector x to each row of the matrix x with an explicit loop
+# # for i in range(4):
+# #     y[i:]=x[i:]+v
+
+# y=x+v # Add v to each row of x using broadcasting
+
+# print(y)
+
+# Matplotlib
+import matplotlib.pyplot as plt
+
+# Plot
+# x=np.arange(0, 3*np.pi, 0.1)
+# y=np.sin(x)
+
+# # Plot the points using matplotlib
+# plt.plot(x, y)
+
+# Subplot
+# x=np.arange(0, 3*np.pi, 0.1)
+# y_sin=np.sin(x)
+# y_cos=np.cos(x)
+
+# # Set up a subplot grid that has height 2 and width 1
+# # and set the first such subplot as active
+# plt.subplot(2, 1, 1)
+
+# # Make the first plot
+# plt.plot(x, y_sin)
+# plt.title('Sine')
+
+# # Set the second subplot as active, and make the second plot.
+# plt.subplot(2, 1, 2)
+# plt.plot(x, y_cos)
+# plt.title('Cosine')
+
+# def draw_simple_sin_cos(x_values):
+#     y1_values=np.sin(x_values*np.pi)
+#     y2_values=np.cos(x_values*np.pi)
+
+#     plt.plot(x_values, y1_values, label='Sine')
+#     plt.plot(x_values, y2_values, label='Cosine')
+
+#     plt.legend()
+#     plt.xlabel('x')
+#     plt.ylabel('values')
+#     plt.title('Values for sin and cos, scaled by $\phi_i$')
+
+# x_values=np.arange(0, 20, 0.001)
+# draw_simple_sin_cos(x_values)
+
+img_arr = np.random.random((256, 256, 3))# 0 -> 1
+print(img_arr.shape)
+
+plt.imshow(img_arr, vmin=0, vmax=1)
+
+# Show the figure
+plt.show() # You must call plt.show() to make graphics appear.
+
+
