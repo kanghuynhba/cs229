@@ -14,19 +14,20 @@ def main(train_path, eval_path, pred_path):
         pred_path: Path to save predictions.
     """
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
-    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
 
     # *** START CODE HERE ***
 
-    # plt.xlabel('x1')
-    # plt.ylabel('x2')
-    # plt.plot(x_train[y_train==1, 1], x_train[y_train==1, 2], 'bx', linewidth=2)
-    # plt.plot(x_train[y_train==0, 1], x_train[y_train==0, 2], 'go', linewidth=2)
+    # Training logistic regression
+    model = LogisticRegression(eps=1e-5)
+    model.fit(x_train, y_train)
 
-    clf=LogisticRegression()
-    clf.fit(x_train, y_train)
-    print(clf.predict(x_eval))
-    print(y_eval)
+    # Plot data and decision boundary
+    util.plot(x_train, y_train, model.theta, 'output/p01b_{}.png'.format(pred_path[-5]))
+    
+    # Save predictions
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+    y_pred = model.predict(x_eval)
+    np.savetxt(pred_path, y_pred>0.5, fmt='%d')
     
     # *** END CODE HERE ***
 
@@ -75,6 +76,23 @@ class LogisticRegression(LinearModel):
             old_theta = new_theta
             new_theta = next_theta(old_theta, x, y)
         self.theta=new_theta
+
+        # # Newton's ethod
+        # while True:
+        #     old_theta=self.theta
+
+        #     # Compute Hypothesis, Gradient & Hessian Matrix
+        #     h_x=1/(1+np.exp(-x.dot(self.theta)))
+        #     gradient_J_theta=x.T.(h_x-y)/m
+        #     hessian=(x.T*h_x*(1-h_x)).dot(x)/m
+
+        #     # Update theta
+        #     self.theta-= np.linalg.inv(hessian).dot(gradient_J_theta)
+
+        #     # End training (break condition)
+        #     if np.linalg.norm(self.theta-old_theta, ord=1)<self.eps:
+        #         break
+
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -87,6 +105,8 @@ class LogisticRegression(LinearModel):
             Outputs of shape (m,).
         """
 
+
         # *** START CODE HERE ***
-        return x.dot(self.theta)>=0
+        # return h(self.theta, x)>=0.5
+        return 1/(1+np.exp(-x.dot(self.theta)))
         # *** END CODE HERE ***
