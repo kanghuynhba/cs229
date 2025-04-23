@@ -1,5 +1,7 @@
 import numpy as np
+import math
 import util
+import matplotlib.pyplot as plt
 
 from linear_model import LinearModel
 
@@ -21,6 +23,19 @@ def main(lr, train_path, eval_path, pred_path):
     # *** START CODE HERE ***
     # Fit a Poisson Regression model
     # Run on the validation set, and use np.savetxt to save outputs to pred_path
+
+    # Training poisson regression
+    model=PoissonRegression(step_size= lr,eps=1e-5)
+    model.fit(x_train, y_train)
+
+    # Plot data and decision boundary
+    util.plot(x_train, y_train, model.theta, 'output/p03d_{}.png'.format(pred_path[-5]))
+    
+    # Save predictions
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
+    y_pred=np.round(model.predict(x_eval))
+    np.savetxt(pred_path, np.column_stack((np.round(y_pred), y_eval)), fmt='%d')
+
     # *** END CODE HERE ***
 
 
@@ -32,6 +47,8 @@ class PoissonRegression(LinearModel):
         > clf.fit(x_train, y_train)
         > clf.predict(x_eval)
     """
+    def h(self, theta, x):
+        return np.exp(x.dot(theta)) # return Shape (m,)
 
     def fit(self, x, y):
         """Run gradient ascent to maximize likelihood for Poisson regression.
@@ -41,6 +58,28 @@ class PoissonRegression(LinearModel):
             y: Training example labels. Shape (m,).
         """
         # *** START CODE HERE ***
+
+        m, n = x.shape
+        
+        # derivative of log-likelihood
+        def gradient(theta):
+            return np.dot(x.T, (y-self.h(theta, x))) # return Shape (n,)
+
+        def next_step(theta):
+            return self.step_size/ m * gradient(theta) # return Shape (n,)
+        
+        if self.theta is None:
+            theta=np.zeros(n)
+        else:
+            theta=self.theta
+
+        # Update theta
+        next_theta=next_step(theta)
+        while np.linalg.norm(next_theta, 1) >= self.eps:
+            theta+=next_theta
+            next_theta=next_step(theta)
+
+        self.theta=theta
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -53,4 +92,5 @@ class PoissonRegression(LinearModel):
             Floating-point prediction for each input, shape (m,).
         """
         # *** START CODE HERE ***
+        return self.h(self.theta, x) 
         # *** END CODE HERE ***
