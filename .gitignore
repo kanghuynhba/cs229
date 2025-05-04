@@ -1,5 +1,6 @@
 # python
- __pycache__/
- *.pyc
+**/*.pyc
+*.pyc
+__pycache__/
 
  _.swp
